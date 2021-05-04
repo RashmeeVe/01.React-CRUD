@@ -11,6 +11,8 @@ import TextField from "@material-ui/core/TextField";
 
 class UserForm extends React.Component {
   render() {
+    // console.log("this.props.error==>", this.props.error);
+    const { errorEmployeeAge, errorEmployeeName } = this.props;
     let selectedUser,
       employee_code,
       employee_name,
@@ -50,8 +52,8 @@ class UserForm extends React.Component {
                 defaultValue={employee_name && employee_name}
                 onChange={this.props.handleFormEntries}
                 label="Employee Name"
-                // error={errorInUserForm["employee_name"] ? errorInUserForm["employee_name"] : false}
-                // label={errorMessages["employee_name"] ? errorMessages["employee_name"] : "Employee Name"}
+                label={errorEmployeeName ? errorEmployeeName : "Employee Name"}
+                error={errorEmployeeName ? true : false}
               />
             </div>
 
@@ -64,9 +66,8 @@ class UserForm extends React.Component {
                 className="CreateUpdateUserFormFields"
                 defaultValue={employee_age && employee_age}
                 onChange={this.props.handleFormEntries}
-                label="Employee Age"
-                // error={errorInUserForm["employee_age"] ? errorInUserForm["employee_age"] : false}
-                // label={errorMessages["employee_age"] ? errorMessages["employee_age"] : "Employee Age" }
+                label={errorEmployeeAge ? errorEmployeeAge : "Employee Age"}
+                error={errorEmployeeAge ? true : false}
               />
             </div>
 
