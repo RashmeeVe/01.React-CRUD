@@ -110,7 +110,7 @@ class UserForm extends React.Component {
             Cancel
           </Button>
           <Button color="primary" type="submit" variant="contained">
-            {selectedUser ? "Update" : "Create"}
+            {this.props.selectedUser ? "Update" : "Create"}
           </Button>
         </DialogActions>
       </form>
