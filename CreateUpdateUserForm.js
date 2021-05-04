@@ -4,8 +4,10 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
+import PropTypes from "prop-types";
 import Tooltip from "@material-ui/core/Tooltip";
 import "./styles.css";
+import withMobileDialog from "@material-ui/core/withMobileDialog";
 
 import UserForm from "./UserForm";
 
@@ -85,8 +87,10 @@ class CreateUpdateUserForm extends React.Component {
   renderCreateUpdateUserForm = () => {
     // const selectedUser = this.props.selectedUser ? this.props.selectedUser : "";
     const { errorEmployeeAge, errorEmployeeName } = this.state;
+    const { fullScreen } = this.props;
     return (
       <Dialog
+        fullScreen={fullScreen}
         open={this.state.isUserFormDialogOpen}
         onClose={this.handleCloseUserFormDialog}
         aria-labelledby="responsive-dialog-title"
@@ -138,4 +142,8 @@ class CreateUpdateUserForm extends React.Component {
   }
 }
 
-export default CreateUpdateUserForm;
+CreateUpdateUserForm.propTypes = {
+  fullScreen: PropTypes.bool.isRequired,
+};
+
+export default withMobileDialog()(CreateUpdateUserForm);
