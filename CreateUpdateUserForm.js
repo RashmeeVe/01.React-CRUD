@@ -18,6 +18,8 @@ class CreateUpdateUserForm extends React.Component {
       employee_name: "",
       employee_age: "",
       employee_profession: "",
+      errorEmployeeAge: "",
+      errorEmployeeName: "",
     };
   }
 
@@ -33,7 +35,18 @@ class CreateUpdateUserForm extends React.Component {
 
   handleFormEntries = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    let errorEmployeeAge, errorEmployeeName;
+
+    if (name === "employee_name" && !value.match(/^[a-zA-Z]+$/)) {
+      errorEmployeeName = "Enter Characters Only";
+    }
+
+    if (name === "employee_age" && value > 99) {
+      errorEmployeeAge = "Age should be less than 99";
+    }
+
+    this.setState({ [name]: value, errorEmployeeAge, errorEmployeeName });
+    return true;
   };
 
   handleCreateUpdateUser = (event) => {
@@ -71,7 +84,7 @@ class CreateUpdateUserForm extends React.Component {
 
   renderCreateUpdateUserForm = () => {
     // const selectedUser = this.props.selectedUser ? this.props.selectedUser : "";
-
+    const { errorEmployeeAge, errorEmployeeName } = this.state;
     return (
       <Dialog
         open={this.state.isUserFormDialogOpen}
@@ -82,6 +95,8 @@ class CreateUpdateUserForm extends React.Component {
           {this.props.selectedUser ? "Update User" : "Create User"}
         </DialogTitle>
         <UserForm
+          errorEmployeeAge={errorEmployeeAge}
+          errorEmployeeName={errorEmployeeName}
           selectedUser={this.props.selectedUser}
           handleCreateUpdateUser={this.handleCreateUpdateUser}
           handleCloseUserFormDialog={this.handleCloseUserFormDialog}
