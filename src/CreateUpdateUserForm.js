@@ -5,11 +5,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import Tooltip from "@material-ui/core/Tooltip";
-import "./styles.css";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
-
 import UserForm from "./UserForm";
+
+const Div = styled.div`
+  width: 100%;
+  text-align: right;
+`;
 
 class CreateUpdateUserForm extends React.Component {
   constructor(props) {
@@ -39,8 +43,12 @@ class CreateUpdateUserForm extends React.Component {
     const { name, value } = event.target;
     let errorEmployeeAge, errorEmployeeName;
 
-    if (name === "employee_name" && !value.match(/^[a-zA-Z]+$/)) {
+    if (name === "employee_name" && !value.match(/^[a-zA-Z ]+$/)) {
       errorEmployeeName = "Enter Characters Only";
+    }
+
+    if (name === "employee_age" && !value.match(/^[0-9]+$/)) {
+      errorEmployeeAge = "Enter Numbers Only";
     }
 
     if (name === "employee_age" && value > 99) {
@@ -51,32 +59,60 @@ class CreateUpdateUserForm extends React.Component {
     return true;
   };
 
+  setStateValues = () => {
+    if (this.props.selectedUser) {
+      const {
+        employee_code,
+        employee_name,
+        employee_age,
+        employee_profession,
+      } = this.props.selectedUser;
+      this.setState({
+        employee_code,
+        employee_name,
+        employee_age,
+        employee_profession,
+      });
+    } else {
+      this.setState({
+        employee_code: "",
+        employee_name: "",
+        employee_age: "",
+        employee_profession: "",
+      });
+    }
+    this.handleOpenUserFormDialog();
+  };
+
   handleCreateUpdateUser = (event) => {
     event.preventDefault();
     let index = null;
     index = this.props.index;
-
-    const form = event.target;
-    const userDetails = {
-      employee_code: form.elements["employee_code"].value,
-      employee_name: form.elements["employee_name"].value,
-      employee_age: form.elements["employee_age"].value,
-      employee_profession: form.elements["employee_profession"].value,
-      index: index,
-    };
-
+    const {
+      employee_code,
+      employee_name,
+      employee_age,
+      employee_profession,
+    } = this.state;
     if (
-      userDetails.employee_code.trim() === "" ||
-      userDetails.employee_name.trim() === "" ||
-      userDetails.employee_age.trim() === "" ||
-      userDetails.employee_profession.trim() === ""
+      employee_code.trim() === "" ||
+      employee_name.trim() === "" ||
+      employee_age.trim() === "" ||
+      employee_profession.trim() === "" ||
+      employee_age > 99 ||
+      !employee_age.match(/^[0-9]+$/) ||
+      !employee_name.match(/^[a-zA-Z ]+$/)
     ) {
       return;
-    } else if (userDetails.employee_age > 99) {
-      return;
-    } else if (!userDetails.employee_name.match(/^[a-zA-Z]+$/)) {
-      return;
     } else {
+      const userDetails = {
+        employee_code: employee_code,
+        employee_name: employee_name,
+        employee_age: employee_age,
+        employee_profession: employee_profession,
+        index: index,
+      };
+
       index >= 0
         ? this.props.updateThisUser(userDetails)
         : this.props.addNewUser(userDetails);
@@ -85,8 +121,6 @@ class CreateUpdateUserForm extends React.Component {
   };
 
   renderCreateUpdateUserForm = () => {
-    // const selectedUser = this.props.selectedUser ? this.props.selectedUser : "";
-    const { errorEmployeeAge, errorEmployeeName } = this.state;
     const { fullScreen } = this.props;
     return (
       <Dialog
@@ -99,9 +133,7 @@ class CreateUpdateUserForm extends React.Component {
           {this.props.selectedUser ? "Update User" : "Create User"}
         </DialogTitle>
         <UserForm
-          errorEmployeeAge={errorEmployeeAge}
-          errorEmployeeName={errorEmployeeName}
-          selectedUser={this.props.selectedUser}
+          state={this.state}
           handleCreateUpdateUser={this.handleCreateUpdateUser}
           handleCloseUserFormDialog={this.handleCloseUserFormDialog}
           handleFormEntries={this.handleFormEntries}
@@ -114,30 +146,32 @@ class CreateUpdateUserForm extends React.Component {
     const { isUserFormDialogOpen } = this.state;
     let button = "";
     if (this.props.selectedUser) {
+      //Show Edit Icon
       button = (
         <Tooltip title="Edit">
-          <IconButton aria-label="edit" onClick={this.handleOpenUserFormDialog}>
+          <IconButton aria-label="edit" onClick={this.setStateValues}>
             <EditIcon color="primary" />
           </IconButton>
         </Tooltip>
       );
     } else {
+      //Show Add User Button
       button = (
         <Button
           variant="contained"
           color="primary"
-          onClick={this.handleOpenUserFormDialog}
+          onClick={this.setStateValues}
         >
           Add User
         </Button>
       );
     }
     return (
-      <div className="main-div">
+      <Div>
         {button}
         {isUserFormDialogOpen && this.renderCreateUpdateUserForm()}
         <br /> <br />
-      </div>
+      </Div>
     );
   }
 }
