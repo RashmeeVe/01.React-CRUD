@@ -1,28 +1,29 @@
-div {
-    padding:5px;
-}
 
-.textFieldContainer {
-    display:flex;
-    flex-direction: column;
-}
+// div {
+//     padding:5px;
+// }
 
-.textFieldDivs {
-    padding-bottom: 15px;
-}
+// .textFieldContainer {
+//     display:flex;
+//     flex-direction: column;
+// }
 
-.UserDetailsTable{
-width: 100% !important;
-}
+// .textFieldDivs {
+//     padding-bottom: 15px;
+// }
 
-.UserDetailsTableHead th {
-    background-color: black;
-    color: white !important;
-}
+// .UserDetailsTable{
+// width: 100% !important;
+// }
 
-.CreateUpdateUserFormFields {
-width:100%;
-}
+// .UserDetailsTableHead th {
+//     background-color: black;
+//     color: white !important;
+// }
 
-.main-div {    width: 100%;    text-align: right;
-}
+// .CreateUpdateUserFormFields {
+// width:100%;
+// }
+
+// .main-div {    width: 100%;    text-align: right;
+// }
