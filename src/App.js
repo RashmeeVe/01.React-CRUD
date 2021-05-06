@@ -52,8 +52,8 @@ class App extends React.Component {
 
   renderTableHead = () => {
     return (
-      <TableHead>
-        <TableRow className={styles.UserDetailsTableHead}>
+      <TableHead className={styles.UserDetailsTableHead}>
+        <TableRow>
           <TableCell>Sr. No.</TableCell>
           <TableCell>Employee Code</TableCell>
           <TableCell>Name</TableCell>
