@@ -7,116 +7,116 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import styled from "styled-components";
+import styles from "./styles.module.css";
 import TextField from "@material-ui/core/TextField";
 
-class UserForm extends React.Component {
-  render() {
-    // console.log("this.props.error==>", this.props.error);
-    const { errorEmployeeAge, errorEmployeeName } = this.props;
-    let selectedUser,
-      employee_code,
-      employee_name,
-      employee_age,
-      employee_profession;
-    if (this.props.selectedUser) {
-      const { selectedUser } = this.props;
-      employee_code = selectedUser.employee_code;
-      employee_name = selectedUser.employee_name;
-      employee_age = selectedUser.employee_age;
-      employee_profession = selectedUser.employee_profession;
-    }
+const TextFieldDivs = styled.div`
+  padding-bottom: 15px;
+`;
 
-    return (
-      <form onSubmit={this.props.handleCreateUpdateUser} autoComplete="off">
-        <DialogContent>
-          <DialogContentText>Enter User Details</DialogContentText>
-          <div className="textFieldContainer">
-            <div className="textFieldDivs">
-              <TextField
-                name="employee_code"
-                placeholder="Employee Code"
-                variant="outlined"
-                className="CreateUpdateUserFormFields"
-                defaultValue={employee_code && employee_code}
-                onChange={this.props.handleFormEntries}
-                label="Employee Code"
-              />
-            </div>
-            <div className="textFieldDivs">
-              <TextField
-                name="employee_name"
-                placeholder="Name"
-                variant="outlined"
-                className="CreateUpdateUserFormFields"
-                multiline
-                defaultValue={employee_name && employee_name}
-                onChange={this.props.handleFormEntries}
-                label="Employee Name"
-                label={errorEmployeeName ? errorEmployeeName : "Employee Name"}
-                error={errorEmployeeName ? true : false}
-              />
-            </div>
+const TextFieldContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-            <div className="textFieldDivs">
-              <TextField
-                name="employee_age"
-                placeholder="Employee Age"
-                variant="outlined"
-                type="number"
-                className="CreateUpdateUserFormFields"
-                defaultValue={employee_age && employee_age}
-                onChange={this.props.handleFormEntries}
-                label={errorEmployeeAge ? errorEmployeeAge : "Employee Age"}
-                error={errorEmployeeAge ? true : false}
-              />
-            </div>
+const UserForm = (props) => {
+  const {
+    errorEmployeeAge,
+    errorEmployeeName,
+    employee_code,
+    employee_name,
+    employee_age,
+    employee_profession,
+  } = props.state;
 
-            <div className="textFieldDivs">
-              <FormControl
-                variant="outlined"
-                className="CreateUpdateUserFormFields"
+  return (
+    <form onSubmit={props.handleCreateUpdateUser} autoComplete="off">
+      <DialogContent>
+        <DialogContentText>Enter User Details</DialogContentText>
+        <TextFieldContainerDiv>
+          <TextFieldDivs>
+            <TextField
+              name="employee_code"
+              placeholder="Employee Code"
+              variant="outlined"
+              className={styles.CreateUpdateUserFormFields}
+              defaultValue={employee_code}
+              onChange={props.handleFormEntries}
+              label="Employee Code"
+            />
+          </TextFieldDivs>
+          <TextFieldDivs>
+            <TextField
+              name="employee_name"
+              placeholder="Name"
+              variant="outlined"
+              className={styles.CreateUpdateUserFormFields}
+              multiline
+              defaultValue={employee_name}
+              onChange={props.handleFormEntries}
+              label={errorEmployeeName ? errorEmployeeName : "Employee Name"}
+              error={errorEmployeeName ? true : false}
+            />
+          </TextFieldDivs>
+
+          <TextFieldDivs>
+            <TextField
+              name="employee_age"
+              placeholder="Employee Age"
+              variant="outlined"
+              className={styles.CreateUpdateUserFormFields}
+              defaultValue={employee_age}
+              onChange={props.handleFormEntries}
+              label={errorEmployeeAge ? errorEmployeeAge : "Employee Age"}
+              error={errorEmployeeAge ? true : false}
+            />
+          </TextFieldDivs>
+
+          <TextFieldDivs>
+            <FormControl
+              variant="outlined"
+              className={styles.CreateUpdateUserFormFields}
+            >
+              <InputLabel htmlFor="outlined-profession-native-simple">
+                Profession
+              </InputLabel>
+              <Select
+                native
+                defaultValue={employee_profession}
+                placeholder="Profession"
+                inputProps={{
+                  name: "employee_profession",
+                  id: "outlined-profession-native-simple",
+                }}
+                onChange={props.handleFormEntries}
+                label="Profession"
               >
-                <InputLabel htmlFor="outlined-profession-native-simple">
-                  Profession
-                </InputLabel>
-                <Select
-                  native
-                  defaultValue={employee_profession && employee_profession}
-                  placeholder="Profession"
-                  inputProps={{
-                    name: "employee_profession",
-                    id: "outlined-profession-native-simple",
-                  }}
-                  onChange={this.props.handleFormEntries}
-                  label="Profession"
-                >
-                  <option aria-label="None" value="" />
-                  <option value="Graphics Designer">Graphics Designer</option>
-                  <option value="Project Manager">Project Manager</option>
-                  <option value="Software Developer">Software Developer</option>
-                  <option value="Software Tester">Software Tester</option>
-                  <option value="Web Designer">Web Designer</option>
-                </Select>
-              </FormControl>
-            </div>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={this.props.handleCloseUserFormDialog}
-            color="primary"
-            variant="outlined"
-          >
-            Cancel
-          </Button>
-          <Button color="primary" type="submit" variant="contained">
-            {this.props.selectedUser ? "Update" : "Create"}
-            {/* {selectedUser ? "Update" : "Create"} */}
-          </Button>
-        </DialogActions>
-      </form>
-    );
-  }
-}
+                <option aria-label="None" value="" />
+                <option value="Graphics Designer">Graphics Designer</option>
+                <option value="Project Manager">Project Manager</option>
+                <option value="Software Developer">Software Developer</option>
+                <option value="Software Tester">Software Tester</option>
+                <option value="Web Designer">Web Designer</option>
+              </Select>
+            </FormControl>
+          </TextFieldDivs>
+        </TextFieldContainerDiv>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={props.handleCloseUserFormDialog}
+          color="primary"
+          variant="outlined"
+        >
+          Cancel
+        </Button>
+        <Button color="primary" type="submit" variant="contained">
+          {employee_code ? "Update" : "Create"}
+        </Button>
+      </DialogActions>
+    </form>
+  );
+};
 
 export default UserForm;
