@@ -1,12 +1,18 @@
 import React from "react";
+import CreateUpdateUserForm from "./CreateUpdateUserForm";
+import DeleteUser from "./DeleteUser";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import "./styles.css";
-import CreateUpdateUserForm from "./CreateUpdateUserForm";
-import DeleteUser from "./DeleteUser";
+import styles from "./styles.module.css";
+import styled from "styled-components";
+import MainDiv from "./myStyles.js";
+
+const UserDetailsTable = styled(Table)`
+  width: 100% !important;
+`;
 
 class App extends React.Component {
   constructor(props) {
@@ -16,10 +22,10 @@ class App extends React.Component {
     };
   }
 
-  addUser = (data) => {
+  addUser = (userDetails) => {
     const { users } = this.state;
     this.setState({
-      users: [data, ...users],
+      users: [userDetails, ...users],
     });
   };
 
@@ -31,12 +37,12 @@ class App extends React.Component {
     }));
   };
 
-  updateUser = (data) => {
-    const user = this.state.users[data.index];
-    user.employee_code = data.employee_code;
-    user.employee_name = data.employee_name;
-    user.employee_age = data.employee_age;
-    user.employee_profession = data.employee_profession;
+  updateUser = (userDetails) => {
+    const user = this.state.users[userDetails.index];
+    user.employee_code = userDetails.employee_code;
+    user.employee_name = userDetails.employee_name;
+    user.employee_age = userDetails.employee_age;
+    user.employee_profession = userDetails.employee_profession;
     this.setState({
       user: user,
     });
@@ -46,8 +52,8 @@ class App extends React.Component {
 
   renderTableHead = () => {
     return (
-      <TableHead className="UserDetailsTableHead">
-        <TableRow>
+      <TableHead>
+        <TableRow className={styles.UserDetailsTableHead}>
           <TableCell>Sr. No.</TableCell>
           <TableCell>Employee Code</TableCell>
           <TableCell>Name</TableCell>
@@ -100,13 +106,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="main-div">
+      <div style={MainDiv}>
         <CreateUpdateUserForm addNewUser={this.addUser} />
-
-        <Table className="UserDetailsTable">
+        <UserDetailsTable>
           {this.renderTableHead()}
           {this.renderTableBody()}
-        </Table>
+        </UserDetailsTable>
       </div>
     );
   }
