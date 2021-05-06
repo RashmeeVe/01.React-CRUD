@@ -8,7 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import "./styles.css";
+import MainDiv from "./myStyles.js";
 
 class DeleteUser extends React.Component {
   constructor(props) {
@@ -66,7 +66,7 @@ class DeleteUser extends React.Component {
   render() {
     const { isDeleteUserDialogOpen } = this.state;
     return (
-      <div className="main-div">
+      <div style={MainDiv}>
         <Tooltip title="Delete">
           <IconButton
             aria-label="delete"
