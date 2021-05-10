@@ -28,6 +28,7 @@ const UserForm = (props) => {
     employee_name,
     employee_age,
     employee_profession,
+    indexToUpdateUser,
   } = props.state;
 
   return (
@@ -112,7 +113,7 @@ const UserForm = (props) => {
           Cancel
         </Button>
         <Button color="primary" type="submit" variant="contained">
-          {employee_code ? "Update" : "Create"}
+          {indexToUpdateUser >= 0 ? "Update" : "Create"}
         </Button>
       </DialogActions>
     </form>
