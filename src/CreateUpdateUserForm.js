@@ -1,43 +1,31 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import EditIcon from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import Tooltip from "@material-ui/core/Tooltip";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import UserForm from "./UserForm";
-
-const Div = styled.div`
-  width: 100%;
-  text-align: right;
-`;
 
 class CreateUpdateUserForm extends React.Component {
   constructor(props) {
     super(props);
+    const {
+      employee_code,
+      employee_name,
+      employee_age,
+      employee_profession,
+      indexToUpdateUser,
+    } = this.props.state;
+
     this.state = {
-      isUserFormDialogOpen: false,
-      employee_code: "",
-      employee_name: "",
-      employee_age: "",
-      employee_profession: "",
+      employee_code: employee_code,
+      employee_name: employee_name,
+      employee_age: employee_age,
+      employee_profession: employee_profession,
       errorEmployeeAge: "",
       errorEmployeeName: "",
+      indexToUpdateUser: indexToUpdateUser,
     };
   }
-
-  handleOpenUserFormDialog = () => {
-    this.setState({
-      isUserFormDialogOpen: true,
-    });
-  };
-
-  handleCloseUserFormDialog = () => {
-    this.setState({ isUserFormDialogOpen: false });
-  };
 
   handleFormEntries = (event) => {
     const { name, value } = event.target;
@@ -59,35 +47,10 @@ class CreateUpdateUserForm extends React.Component {
     return true;
   };
 
-  setStateValues = () => {
-    if (this.props.selectedUser) {
-      const {
-        employee_code,
-        employee_name,
-        employee_age,
-        employee_profession,
-      } = this.props.selectedUser;
-      this.setState({
-        employee_code,
-        employee_name,
-        employee_age,
-        employee_profession,
-      });
-    } else {
-      this.setState({
-        employee_code: "",
-        employee_name: "",
-        employee_age: "",
-        employee_profession: "",
-      });
-    }
-    this.handleOpenUserFormDialog();
-  };
-
   handleCreateUpdateUser = (event) => {
     event.preventDefault();
     let index = null;
-    index = this.props.index;
+    index = this.props.state.indexToUpdateUser;
     const {
       employee_code,
       employee_name,
@@ -116,62 +79,31 @@ class CreateUpdateUserForm extends React.Component {
       index >= 0
         ? this.props.updateThisUser(userDetails)
         : this.props.addNewUser(userDetails);
-      this.handleCloseUserFormDialog();
+      this.props.handleCloseUserFormDialog();
     }
-  };
-
-  renderCreateUpdateUserForm = () => {
-    const { fullScreen } = this.props;
-    return (
-      <Dialog
-        fullScreen={fullScreen}
-        open={this.state.isUserFormDialogOpen}
-        onClose={this.handleCloseUserFormDialog}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">
-          {this.props.selectedUser ? "Update User" : "Create User"}
-        </DialogTitle>
-        <UserForm
-          state={this.state}
-          handleCreateUpdateUser={this.handleCreateUpdateUser}
-          handleCloseUserFormDialog={this.handleCloseUserFormDialog}
-          handleFormEntries={this.handleFormEntries}
-        />
-      </Dialog>
-    );
   };
 
   render() {
-    const { isUserFormDialogOpen } = this.state;
-    let button = "";
-    if (this.props.selectedUser) {
-      //Show Edit Icon
-      button = (
-        <Tooltip title="Edit">
-          <IconButton aria-label="edit" onClick={this.setStateValues}>
-            <EditIcon color="primary" />
-          </IconButton>
-        </Tooltip>
-      );
-    } else {
-      //Show Add User Button
-      button = (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.setStateValues}
-        >
-          Add User
-        </Button>
-      );
-    }
+    const { fullScreen } = this.props;
+    const { indexToUpdateUser } = this.props.state;
     return (
-      <Div>
-        {button}
-        {isUserFormDialogOpen && this.renderCreateUpdateUserForm()}
-        <br /> <br />
-      </Div>
+      <Dialog
+        fullScreen={fullScreen}
+        open={this.props.state.isUserFormDialogOpen}
+        onClose={this.props.handleCloseUserFormDialog}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+          {indexToUpdateUser >= 0 ? "Update User" : "Create User"}
+        </DialogTitle>
+        <UserForm
+          state={this.state}
+          userToUpdate={this.props.state}
+          handleCreateUpdateUser={this.handleCreateUpdateUser}
+          handleCloseUserFormDialog={this.props.handleCloseUserFormDialog}
+          handleFormEntries={this.handleFormEntries}
+        />
+      </Dialog>
     );
   }
 }
