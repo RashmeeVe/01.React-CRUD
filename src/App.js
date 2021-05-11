@@ -49,16 +49,34 @@ class App extends React.Component {
   };
 
   updateUser = (userDetails) => {
-    // const user = this.state.users[userDetails.index];
-    // user.employee_code = userDetails.employee_code;
-    // user.employee_name = userDetails.employee_name;
-    // user.employee_age = userDetails.employee_age;
-    // user.employee_profession = userDetails.employee_profession;
-    // this.setState({
-    //   user: user,
-    // });
-    const usersData = this.state.users;
-    usersData[userDetails.index] = userDetails;
+        //Method 1//
+    // const { users } = this.state;
+    // usersData[userDetails.index] = userDetails;
+
+    //Method 2//
+    // let users = [...this.state.users];
+    // users[userDetails.index] = {
+    //   employee_code: userDetails.employee_code,
+    //   employee_name: userDetails.employee_name,
+    //   employee_age: userDetails.employee_age,
+    //   employee_profession: userDetails.employee_profession,
+    // };
+    // this.setState({ users });
+
+    //Method 3 // Most Appropriate
+    let users = [...this.state.users];
+    let updatedUsers = users.map((user, index) =>
+      index === userDetails.index
+        ? {
+            ...user,
+            employee_code: userDetails.employee_code,
+            employee_name: userDetails.employee_name,
+            employee_age: userDetails.employee_age,
+            employee_profession: userDetails.employee_profession,
+          }
+        : user
+    );
+    this.setState({ users: updatedUsers });
   };
 
   setStateValues = (e, user, index) => {
