@@ -10,14 +10,16 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import styles from "./styles.module.css";
-import styled from "styled-components";
+import { withStyles } from "@material-ui/styles";
 import Tooltip from "@material-ui/core/Tooltip";
-import MainDiv from "./myStyles.js";
 
-const UserDetailsTable = styled(Table)`
-  width: 100% !important;
-`;
+const styles = {
+  UserDetailsTable: {
+    width: "100%",
+  },
+
+  MainDiv: { width: "100%", textAlign: "right" },
+};
 
 class App extends React.Component {
   constructor(props) {
@@ -47,14 +49,16 @@ class App extends React.Component {
   };
 
   updateUser = (userDetails) => {
-    const user = this.state.users[userDetails.index];
-    user.employee_code = userDetails.employee_code;
-    user.employee_name = userDetails.employee_name;
-    user.employee_age = userDetails.employee_age;
-    user.employee_profession = userDetails.employee_profession;
-    this.setState({
-      user: user,
-    });
+    // const user = this.state.users[userDetails.index];
+    // user.employee_code = userDetails.employee_code;
+    // user.employee_name = userDetails.employee_name;
+    // user.employee_age = userDetails.employee_age;
+    // user.employee_profession = userDetails.employee_profession;
+    // this.setState({
+    //   user: user,
+    // });
+    const usersData = this.state.users;
+    usersData[userDetails.index] = userDetails;
   };
 
   setStateValues = (e, user, index) => {
@@ -110,14 +114,16 @@ class App extends React.Component {
 
   renderTableHead = () => {
     return (
-      <TableHead className={styles.UserDetailsTableHead}>
-        <TableRow>
-          <TableCell>Sr. No.</TableCell>
-          <TableCell>Employee Code</TableCell>
-          <TableCell>Name</TableCell>
-          <TableCell>Age</TableCell>
-          <TableCell>Profession</TableCell>
-          <TableCell colSpan="2">Action</TableCell>
+      <TableHead>
+        <TableRow style={{ backgroundColor: "black" }}>
+          <TableCell style={{ color: "white" }}>Sr. No.</TableCell>
+          <TableCell style={{ color: "white" }}>Employee Code</TableCell>
+          <TableCell style={{ color: "white" }}>Name</TableCell>
+          <TableCell style={{ color: "white" }}>Age</TableCell>
+          <TableCell style={{ color: "white" }}>Profession</TableCell>
+          <TableCell style={{ color: "white" }} colSpan="2">
+            Action
+          </TableCell>
         </TableRow>
       </TableHead>
     );
@@ -173,9 +179,10 @@ class App extends React.Component {
   // Show User Details Section Ends //
 
   render() {
+    const { classes } = this.props;
     const { isUserFormDialogOpen } = this.state;
     return (
-      <div style={MainDiv}>
+      <div className={classes.MainDiv}>
         <Button
           variant="contained"
           color="primary"
@@ -197,13 +204,13 @@ class App extends React.Component {
           deleteThisUser={this.deleteUser}
           handleCloseDeleteUserDialog={this.handleCloseDeleteUserDialog}
         />
-        <UserDetailsTable>
+        <Table className={classes.UserDetailsTable}>
           {this.renderTableHead()}
           {this.renderTableBody()}
-        </UserDetailsTable>
+        </Table>
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
