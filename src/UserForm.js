@@ -7,18 +7,23 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import styled from "styled-components";
-import styles from "./styles.module.css";
+import { withStyles } from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
 
-const TextFieldDivs = styled.div`
-  padding-bottom: 15px;
-`;
+const styles = {
+  TextFieldDivs: {
+    paddingBottom: "15px",
+  },
 
-const TextFieldContainerDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+  TextFieldContainerDiv: {
+    display: "flex",
+    flexDirection: "column",
+  },
+
+  CreateUpdateUserFormFields: {
+    width: "100%",
+  },
+};
 
 const UserForm = (props) => {
   const {
@@ -31,53 +36,56 @@ const UserForm = (props) => {
     indexToUpdateUser,
   } = props.state;
 
+  const { classes } = props;
+
   return (
     <form onSubmit={props.handleCreateUpdateUser} autoComplete="off">
       <DialogContent>
         <DialogContentText>Enter User Details</DialogContentText>
-        <TextFieldContainerDiv>
-          <TextFieldDivs>
+        <div className={classes.TextFieldContainerDiv}>
+          <div className={classes.TextFieldDivs}>
             <TextField
               name="employee_code"
               placeholder="Employee Code"
               variant="outlined"
-              className={styles.CreateUpdateUserFormFields}
+              className={classes.CreateUpdateUserFormFields}
               defaultValue={employee_code}
               onChange={props.handleFormEntries}
               label="Employee Code"
             />
-          </TextFieldDivs>
-          <TextFieldDivs>
+          </div>
+          <div className={classes.TextFieldDivs}>
             <TextField
               name="employee_name"
               placeholder="Name"
               variant="outlined"
-              className={styles.CreateUpdateUserFormFields}
+              className={classes.CreateUpdateUserFormFields}
               multiline
               defaultValue={employee_name}
               onChange={props.handleFormEntries}
               label={errorEmployeeName ? errorEmployeeName : "Employee Name"}
               error={errorEmployeeName ? true : false}
             />
-          </TextFieldDivs>
+          </div>
 
-          <TextFieldDivs>
+          <div className={classes.TextFieldDivs}>
             <TextField
               name="employee_age"
               placeholder="Employee Age"
               variant="outlined"
-              className={styles.CreateUpdateUserFormFields}
+              type="number"
+              className={classes.CreateUpdateUserFormFields}
               defaultValue={employee_age}
               onChange={props.handleFormEntries}
               label={errorEmployeeAge ? errorEmployeeAge : "Employee Age"}
               error={errorEmployeeAge ? true : false}
             />
-          </TextFieldDivs>
+          </div>
 
-          <TextFieldDivs>
+          <div className={classes.TextFieldDivs}>
             <FormControl
               variant="outlined"
-              className={styles.CreateUpdateUserFormFields}
+              className={classes.CreateUpdateUserFormFields}
             >
               <InputLabel htmlFor="outlined-profession-native-simple">
                 Profession
@@ -101,8 +109,8 @@ const UserForm = (props) => {
                 <option value="Web Designer">Web Designer</option>
               </Select>
             </FormControl>
-          </TextFieldDivs>
-        </TextFieldContainerDiv>
+          </div>
+        </div>
       </DialogContent>
       <DialogActions>
         <Button
@@ -120,4 +128,4 @@ const UserForm = (props) => {
   );
 };
 
-export default UserForm;
+export default withStyles(styles)(UserForm);
